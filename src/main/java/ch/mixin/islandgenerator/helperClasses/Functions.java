@@ -1,9 +1,5 @@
 package ch.mixin.islandgenerator.helperClasses;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
-import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
 import ch.mixin.islandgenerator.model.Coordinate2D;
 import ch.mixin.islandgenerator.model.Coordinate3D;
 import org.bukkit.Location;
@@ -116,32 +112,4 @@ public class Functions {
         return new Location(world, x, y, z);
     }
 
-    public static void makeHolographicText(ArrayList<String> names, Location location) {
-        if (!IslandGeneratorPlugin.useHolographicDisplays)
-            return;
-
-        Hologram hologram = HologramsAPI.createHologram(IslandGeneratorPlugin.PLUGIN, location);
-        for (String name : names) {
-            TextLine t = hologram.appendTextLine(name);
-        }
-
-//        World world = location.getWorld();
-//        double x = location.getX();
-//        double y = location.getY();
-//        double z = location.getZ();
-//
-//        y += 0.25 * names.size();
-//
-//        for (String name : names) {
-//            y -= 0.25;
-//            Location l = new Location(world, x, y, z);
-//            ArmorStand as = (ArmorStand) l.getWorld().spawnEntity(l, EntityType.ARMOR_STAND); //Spawn the ArmorStand
-//
-//            as.setGravity(false); //Make sure it doesn't fall
-//            as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
-//            as.setCustomName(name); //Set this to the text you want
-//            as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
-//            as.setVisible(false); //Makes the ArmorStand invisible
-//        }
-    }
 }

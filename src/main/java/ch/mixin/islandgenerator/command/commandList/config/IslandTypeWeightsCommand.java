@@ -4,11 +4,9 @@ import ch.mixin.islandgenerator.command.SubCommand;
 import ch.mixin.islandgenerator.islandGeneration.IslandType;
 import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
 import org.bukkit.ChatColor;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class IslandTypeWeightsCommand extends SubCommand {

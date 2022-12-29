@@ -1,9 +1,9 @@
 package ch.mixin.islandgenerator.islandGeneration.islandPlacer;
 
-import ch.mixin.islandgenerator.helperClasses.Functions;
-import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
 import ch.mixin.islandgenerator.helperClasses.Constants;
+import ch.mixin.islandgenerator.helperClasses.Functions;
 import ch.mixin.islandgenerator.islandGeneration.islandConstructor.IslandBlueprint;
+import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
 import ch.mixin.islandgenerator.model.Coordinate3D;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,7 +21,6 @@ public class IslandPlacer {
 
     public void placeIsland(IslandBlueprint islandBlueprint) {
         World world = islandBlueprint.getWorld();
-        Functions.makeHolographicText(islandBlueprint.getNames(), islandBlueprint.getNameLocation().toLocation(world));
 
         placeLoot(world, islandBlueprint.getLootPosition());
 

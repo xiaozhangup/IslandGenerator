@@ -1,26 +1,21 @@
 package ch.mixin.islandgenerator.loot;
 
 import ch.mixin.islandgenerator.helperClasses.Functions;
-import ch.mixin.islandgenerator.islandGeneration.islandConstructor.IslandConstructor;
-import ch.mixin.islandgenerator.islandGeneration.islandPlacer.IslandPlacer;
 import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 public class LootManager {
     private final IslandGeneratorPlugin plugin;
-
+    private HashMap<Material, Double> materialWeights;
+    private HashMap<Material, Double> materialAmounts;
     public LootManager(IslandGeneratorPlugin plugin) {
         this.plugin = plugin;
         initialize();
     }
-
-    private HashMap<Material, Double> materialWeights;
-    private HashMap<Material, Double> materialAmounts;
 
     private void initialize() {
         ConfigurationSection lootTableSection = plugin.getConfig().getConfigurationSection("lootTable");

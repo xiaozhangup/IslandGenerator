@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ch.mixin</groupId>
     <artifactId>IslandGenerator</artifactId>
-    <version>1.3.5</version>
+    <version>HLS-0.1.0</version>
     <packaging>jar</packaging>
 
     <name>IslandGenerator</name>
@@ -16,7 +16,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mixinPluginExport>C:\Users\Misch\Daten\Mixin_Repository\Mixin_Private\Minecraft\Plugins\Export</mixinPluginExport>
+        <mixinPluginExport>C:\Users\Misch\Daten\Mixin_Repository\Mixin_Private\Minecraft\Plugins\Export
+        </mixinPluginExport>
     </properties>
 
     <build>
@@ -75,12 +76,6 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.19.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.gmail.filoghost.holographicdisplays</groupId>
-            <artifactId>holographicdisplays-api</artifactId>
-            <version>2.4.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

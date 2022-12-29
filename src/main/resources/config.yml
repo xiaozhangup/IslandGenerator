@@ -2,8 +2,6 @@ spawnRadius: 100
 islandDistance: 50
 islandRadius: 20
 tickBuffer: 1
-worlds:
-- world
 glassSphereMaximumHeight: -1001
 glassSphereMinimumHeight: -1000
 glassSphereExtraRadiusMax: 0
@@ -41,6 +39,9 @@ lootTable:
   LAPIS_LAZULI:
     weight: 0.5
     amount: 1
+  COPPER_INGOT:
+    weight: 0.25
+    amount: 4
   EMERALD:
     weight: 0.5
     amount: 0.2
@@ -78,6 +79,9 @@ lootTable:
   POINTED_DRIPSTONE:
     weight: 0.4
     amount: 1
+  AMETHYST_SHARD:
+    weight: 0.25
+    amount: 4
 
   ELYTRA:
     weight: 0.2

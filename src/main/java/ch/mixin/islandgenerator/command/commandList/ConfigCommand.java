@@ -1,7 +1,8 @@
 package ch.mixin.islandgenerator.command.commandList;
 
 import ch.mixin.islandgenerator.command.SubCommand;
-import ch.mixin.islandgenerator.command.commandList.config.*;
+import ch.mixin.islandgenerator.command.commandList.config.IslandTypeWeightsCommand;
+import ch.mixin.islandgenerator.command.commandList.config.WorldsCommand;
 import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

@@ -1,7 +1,5 @@
 package ch.mixin.islandgenerator.islandGeneration;
 
-import org.bukkit.Material;
-
 public class SpawnRange {
     private final int maxHeight;
     private final int minHeight;

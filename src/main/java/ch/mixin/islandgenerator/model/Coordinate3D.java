@@ -17,12 +17,16 @@ public class Coordinate3D {
         this.z = z;
     }
 
+    public static Coordinate3D toCoordinate(Location location) {
+        return new Coordinate3D(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+    }
+
     public Coordinate3D copy() {
         return new Coordinate3D(x, y, z);
     }
 
     public double length() {
-        return Math.pow(Math.pow(x, 2) + Math.pow(y, 2)+ Math.pow(z, 2), 0.5);
+        return Math.pow(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2), 0.5);
     }
 
     public Coordinate2D to2D() {
@@ -31,10 +35,6 @@ public class Coordinate3D {
 
     public Location toLocation(World world) {
         return new Location(world, x, y, z);
-    }
-
-    public static Coordinate3D toCoordinate(Location location) {
-        return new Coordinate3D(location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
     public Coordinate3D sum(Coordinate3D c3d) {

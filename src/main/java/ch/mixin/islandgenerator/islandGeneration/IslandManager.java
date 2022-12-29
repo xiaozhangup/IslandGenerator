@@ -3,12 +3,9 @@ package ch.mixin.islandgenerator.islandGeneration;
 import ch.mixin.islandgenerator.helperClasses.Functions;
 import ch.mixin.islandgenerator.islandGeneration.islandPlacer.IslandPlacer;
 import ch.mixin.islandgenerator.metaData.IslandData;
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import ch.mixin.islandgenerator.helperClasses.Constants;
 import ch.mixin.islandgenerator.islandGeneration.islandConstructor.IslandConstructor;
 import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
-import ch.mixin.islandgenerator.metaData.MetaData;
 import ch.mixin.islandgenerator.metaData.WorldData;
 import ch.mixin.islandgenerator.model.Coordinate3D;
 import org.bukkit.Material;
@@ -23,7 +20,6 @@ public class IslandManager {
     private final IslandGeneratorPlugin plugin;
     private final IslandConstructor islandConstructor;
     private final IslandPlacer islandPlacer;
-    private boolean isActive = false;
 
     public IslandManager(IslandGeneratorPlugin plugin) {
         this.plugin = plugin;
@@ -31,58 +27,11 @@ public class IslandManager {
         islandPlacer = new IslandPlacer(plugin);
     }
 
-    public void startIslandRegeneration() {
-        if (isActive)
-            return;
-
-        isActive = true;
-        consolePrint("Start Island Regeneration");
-        HashMap<String, WorldData> worldDataMap = plugin.getMetaData().getWorldDataMap();
-        HashMap<World, ArrayList<IslandData>> islandDataMap = new HashMap<>();
-        List<String> worldNames = IslandGeneratorPlugin.PLUGIN.getConfig().getStringList("worlds");
-
-        for (String worldName : worldNames) {
-            World world = plugin.getServer().getWorld(worldName);
-
-            if (world == null)
-                continue;
-
-            consolePrint("Start Island Finding: " + worldName);
-            ArrayList<IslandData> islandDataList = new ArrayList<>();
-            islandDataMap.put(world, islandDataList);
-
-            WorldData worldData = worldDataMap.get(worldName);
-
-            if (worldData == null) {
-                worldData = new WorldData(0, new ArrayList<>());
-                worldDataMap.put(worldName, worldData);
-            }
-
-            for (IslandData islandData : worldData.getIslandDatas()) {
-                if (!islandData.isLooted()) {
-                    islandDataList.add(islandData);
-                }
-            }
-
-            consolePrint("Finish Island Finding: " + worldName);
-            consolePrint("+" + islandDataList.size() + " old Islands");
-        }
-
-        consolePrint("Start Island Reconstruction");
-        regenerationStep(islandDataMap);
-    }
-
-    public void startIslandGeneration() {
-        if (isActive)
-            return;
-
-        isActive = true;
+    public void startIslandGeneration(String worldName) {
         consolePrint("Start Island Generation");
-        HashMap<String, WorldData> worldDataMap = plugin.getMetaData().getWorldDataMap();
         Random random = plugin.getRandom();
         HashMap<World, ArrayList<IslandData>> islandDataMap = new HashMap<>();
         FileConfiguration config = plugin.getConfig();
-        List<String> worldNames = config.getStringList("worlds");
 
         HashMap<SpawnRange, Double> spawnRanges = new HashMap<>();
         int highestY = 0;
@@ -101,18 +50,12 @@ public class IslandManager {
         int spawnRadius = config.getInt("spawnRadius");
         int islandDistance = config.getInt("islandDistance");
 
-        for (String worldName : worldNames) {
             World world = plugin.getServer().getWorld(worldName);
 
             if (world == null)
-                continue;
+                return;
 
-            WorldData worldData = worldDataMap.get(worldName);
-
-            if (worldData == null) {
-                worldData = new WorldData(0, new ArrayList<>());
-                worldDataMap.put(worldName, worldData);
-            }
+            WorldData worldData = new WorldData(0, new ArrayList<>());
 
             consolePrint("Start Island Pointing: " + worldName);
             ArrayList<IslandData> newIslandDataList = new ArrayList<>();
@@ -120,7 +63,7 @@ public class IslandManager {
             int limit = worldData.getSpawnRadius();
 
             if (limit >= spawnRadius)
-                continue;
+                return;
 
             ArrayList<IslandData> islandDatas = worldData.getIslandDatas();
 
@@ -172,7 +115,7 @@ public class IslandManager {
                 newIslandDataList.add(newIslandData);
                 iterationsConcluded++;
                 attempts = 0;
-            }
+
 
             worldData.setSpawnRadius(spawnRadius);
             consolePrint("Finish Island Pointing: " + worldName);
@@ -181,46 +124,6 @@ public class IslandManager {
 
         consolePrint("Start Island Construction");
         generationStep(islandDataMap);
-    }
-
-    private void regenerationStep(HashMap<World, ArrayList<IslandData>> islandDataMap) {
-        Optional<World> optional = islandDataMap.keySet().stream().findFirst();
-
-        if (!optional.isPresent())
-            return;
-
-        World world = optional.get();
-        ArrayList<IslandData> islandDataList = islandDataMap.get(world);
-
-        if (islandDataList.size() > 0) {
-            IslandData islandData = islandDataList.get(0);
-            islandDataList.remove(islandData);
-
-            for (Coordinate3D coordinate3D : Functions.getSphere3D(islandData.getIslandCenter(), plugin.getConfig().getInt("islandDistance") * 0.5)) {
-                Block block = coordinate3D.toLocation(world).getBlock();
-
-                if (!Constants.Airs.contains(block.getType())) {
-                    block.setType(Material.AIR);
-                }
-            }
-
-            islandPlacer.placeIsland(islandConstructor.constructIsland(world, islandData));
-            consolePrint(islandDataList.size() + " islands left in " + world.getName() + ".");
-        }
-
-        if (islandDataList.size() == 0) {
-            islandDataMap.remove(world);
-            consolePrint(islandDataMap.size() + " worlds left.");
-        }
-
-        if (islandDataMap.size() > 0) {
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> regenerationStep(islandDataMap), plugin.getConfig().getInt("tickBuffer"));
-        } else {
-            plugin.getMetaData().save();
-            regenerateHolograms();
-            consolePrint("Finish Island Reconstruction");
-            isActive = false;
-        }
     }
 
     private void generationStep(HashMap<World, ArrayList<IslandData>> islandDataMap) {
@@ -247,32 +150,10 @@ public class IslandManager {
         if (islandDataMap.size() > 0) {
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> generationStep(islandDataMap), plugin.getConfig().getInt("tickBuffer"));
         } else {
-            plugin.getMetaData().save();
             consolePrint("Finish Island Construction");
-            isActive = false;
         }
     }
 
-    public void regenerateHolograms() {
-        if (!IslandGeneratorPlugin.useHolographicDisplays)
-            return;
-
-        for (Hologram hologram : HologramsAPI.getHolograms(plugin)) {
-            hologram.delete();
-        }
-
-        HashMap<String, WorldData> worldDataMap = plugin.getMetaData().getWorldDataMap();
-
-        for (String worldName : worldDataMap.keySet()) {
-            World world = plugin.getServer().getWorld(worldName);
-
-            if (world == null)
-                continue;
-            for (IslandData islandData : worldDataMap.get(worldName).getIslandDatas()) {
-                Functions.makeHolographicText(islandData.getNames(), islandData.getLootPosition().sum(0, 3, 0).toLocation(world));
-            }
-        }
-    }
 
     private void consolePrint(String text) {
         System.out.println("[" + IslandGeneratorPlugin.PLUGIN_NAME + "] " + text);

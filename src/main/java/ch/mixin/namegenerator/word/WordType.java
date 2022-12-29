@@ -1,9 +1,9 @@
 package ch.mixin.namegenerator.word;
 
 public enum WordType {
-	ADJECTIVE,
-	NOUN,
-	PREPOSITION,
-	VERB,
-	;
+    ADJECTIVE,
+    NOUN,
+    PREPOSITION,
+    VERB,
+    ;
 }

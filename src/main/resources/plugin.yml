@@ -11,9 +11,6 @@ permissions:
   islandGenerator.generate:
     description: Island Generation and Regeneration.
     default: op
-  islandGenerator.lookup:
-    description: Loot Lookup.
-    default: op
   islandGenerator.reload:
     description: Reload Plugin Resources.
     default: op
@@ -25,6 +22,5 @@ permissions:
     default: op
     children:
       islandGenerator.generate: true
-      islandGenerator.lookup: true
       islandGenerator.reload: true
       islandGenerator.config: true

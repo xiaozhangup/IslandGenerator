@@ -1,6 +1,8 @@
 package ch.mixin.islandgenerator.command;
 
-import ch.mixin.islandgenerator.command.commandList.*;
+import ch.mixin.islandgenerator.command.commandList.ConfigCommand;
+import ch.mixin.islandgenerator.command.commandList.GenerateCommand;
+import ch.mixin.islandgenerator.command.commandList.ReloadCommand;
 import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -22,8 +24,6 @@ public class RootCommand extends SubCommand implements CommandExecutor {
         subCommandMap = new HashMap<>();
         subCommandMap.put("reload", new ReloadCommand(plugin));
         subCommandMap.put("generate", new GenerateCommand(plugin));
-        subCommandMap.put("regenerate", new RegenerateCommand(plugin));
-        subCommandMap.put("lookupLoot", new LookupLootCommand(plugin));
         subCommandMap.put("config", new ConfigCommand(plugin));
     }
 

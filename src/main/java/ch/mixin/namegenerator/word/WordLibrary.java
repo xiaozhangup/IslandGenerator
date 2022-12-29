@@ -29,14 +29,14 @@ public class WordLibrary {
 
     private static String directoryPath;
 
+    static {
+        initializeWords();
+    }
+
     private final Random random;
 
     public WordLibrary(Random random) {
         this.random = random;
-    }
-
-    static {
-        initializeWords();
     }
 
     private static void initializeWords() {
@@ -48,142 +48,6 @@ public class WordLibrary {
         for (WordType wordType : WordType.values()) {
             initializeWordType(wordType);
         }
-    }
-
-    public Adjective getAdjective(ArrayList<AdjectiveType> adjectiveTypes, Boolean balanced) {
-        if (balanced) {
-            HashMap<AdjectiveType, Double> adjectiveTypeMap = new HashMap<>();
-            for (AdjectiveType adjectiveType : adjectiveTypes) {
-                adjectiveTypeMap.put(adjectiveType, 1.0);
-            }
-            return getAdjective(adjectiveTypeMap);
-        } else {
-            ArrayList<Adjective> adjectiveList = new ArrayList<>();
-            adjectiveTypes.stream().forEach((w) -> adjectiveList.addAll(adjectives.get(w)));
-            return adjectiveList.get(random.nextInt(adjectiveList.size()));
-        }
-    }
-
-    public Adjective getAdjective(HashMap<AdjectiveType, Double> adjectiveTypeMap) {
-        AdjectiveType chosenAdjectiveType = null;
-
-        Double sum = 0.0;
-        for (Double weight : adjectiveTypeMap.values()) {
-            sum += weight;
-        }
-        Double pointer = random.nextDouble() * sum;
-        for (AdjectiveType nt : adjectiveTypeMap.keySet()) {
-            pointer -= adjectiveTypeMap.get(nt);
-            if (pointer < 0) {
-                chosenAdjectiveType = nt;
-                break;
-            }
-        }
-
-        ArrayList<Adjective> adjectiveList = new ArrayList<>(adjectives.get(chosenAdjectiveType));
-        return adjectiveList.get(random.nextInt(adjectiveList.size()));
-    }
-
-    public Noun getNoun(ArrayList<NounType> nounTypes, Boolean balanced) {
-        if (balanced) {
-            HashMap<NounType, Double> nounTypeMap = new HashMap<>();
-            for (NounType nounType : nounTypes) {
-                nounTypeMap.put(nounType, 1.0);
-            }
-            return getNoun(nounTypeMap);
-        } else {
-            ArrayList<Noun> nounList = new ArrayList<>();
-            nounTypes.stream().forEach((w) -> nounList.addAll(nouns.get(w)));
-            return nounList.get(random.nextInt(nounList.size()));
-        }
-    }
-
-    public Noun getNoun(HashMap<NounType, Double> nounTypeMap) {
-        NounType chosenNounType = null;
-
-        Double sum = 0.0;
-        for (Double weight : nounTypeMap.values()) {
-            sum += weight;
-        }
-        Double pointer = random.nextDouble() * sum;
-        for (NounType nt : nounTypeMap.keySet()) {
-            pointer -= nounTypeMap.get(nt);
-            if (pointer < 0) {
-                chosenNounType = nt;
-                break;
-            }
-        }
-
-        ArrayList<Noun> nounList = new ArrayList<>(nouns.get(chosenNounType));
-        return nounList.get(random.nextInt(nounList.size()));
-    }
-
-    public Preposition getPreposition(ArrayList<PrepositionType> prepositionTypes, Boolean balanced) {
-        if (balanced) {
-            HashMap<PrepositionType, Double> prepositionTypeMap = new HashMap<>();
-            for (PrepositionType prepositionType : prepositionTypes) {
-                prepositionTypeMap.put(prepositionType, 1.0);
-            }
-            return getPreposition(prepositionTypeMap);
-        } else {
-            ArrayList<Preposition> prepositionList = new ArrayList<>();
-            prepositionTypes.stream().forEach((w) -> prepositionList.addAll(prepositions.get(w)));
-            return prepositionList.get(random.nextInt(prepositionList.size()));
-        }
-    }
-
-    public Preposition getPreposition(HashMap<PrepositionType, Double> prepositionTypeMap) {
-        PrepositionType chosenPrepositionType = null;
-
-        Double sum = 0.0;
-        for (Double weight : prepositionTypeMap.values()) {
-            sum += weight;
-        }
-        Double pointer = random.nextDouble() * sum;
-        for (PrepositionType nt : prepositionTypeMap.keySet()) {
-            pointer -= prepositionTypeMap.get(nt);
-            if (pointer < 0) {
-                chosenPrepositionType = nt;
-                break;
-            }
-        }
-
-        ArrayList<Preposition> prepositionList = new ArrayList<>(prepositions.get(chosenPrepositionType));
-        return prepositionList.get(random.nextInt(prepositionList.size()));
-    }
-
-    public Verb getVerb(ArrayList<VerbType> verbTypes, Boolean balanced) {
-        if (balanced) {
-            HashMap<VerbType, Double> verbTypeMap = new HashMap<>();
-            for (VerbType verbType : verbTypes) {
-                verbTypeMap.put(verbType, 1.0);
-            }
-            return getVerb(verbTypeMap);
-        } else {
-            ArrayList<Verb> verbList = new ArrayList<>();
-            verbTypes.stream().forEach((w) -> verbList.addAll(verbs.get(w)));
-            return verbList.get(random.nextInt(verbList.size()));
-        }
-    }
-
-    public Verb getVerb(HashMap<VerbType, Double> verbTypeMap) {
-        VerbType chosenVerbType = null;
-
-        Double sum = 0.0;
-        for (Double weight : verbTypeMap.values()) {
-            sum += weight;
-        }
-        Double pointer = random.nextDouble() * sum;
-        for (VerbType nt : verbTypeMap.keySet()) {
-            pointer -= verbTypeMap.get(nt);
-            if (pointer < 0) {
-                chosenVerbType = nt;
-                break;
-            }
-        }
-
-        ArrayList<Verb> verbList = new ArrayList<>(verbs.get(chosenVerbType));
-        return verbList.get(random.nextInt(verbList.size()));
     }
 
     private static void initializeWordType(WordType wordType) {
@@ -335,5 +199,141 @@ public class WordLibrary {
 
     private static ArrayList<String> read(String filePath) {
         return new ArrayList<>(Arrays.asList(ReaderFunctions.readFile(filePath).split("\n")));
+    }
+
+    public Adjective getAdjective(ArrayList<AdjectiveType> adjectiveTypes, Boolean balanced) {
+        if (balanced) {
+            HashMap<AdjectiveType, Double> adjectiveTypeMap = new HashMap<>();
+            for (AdjectiveType adjectiveType : adjectiveTypes) {
+                adjectiveTypeMap.put(adjectiveType, 1.0);
+            }
+            return getAdjective(adjectiveTypeMap);
+        } else {
+            ArrayList<Adjective> adjectiveList = new ArrayList<>();
+            adjectiveTypes.stream().forEach((w) -> adjectiveList.addAll(adjectives.get(w)));
+            return adjectiveList.get(random.nextInt(adjectiveList.size()));
+        }
+    }
+
+    public Adjective getAdjective(HashMap<AdjectiveType, Double> adjectiveTypeMap) {
+        AdjectiveType chosenAdjectiveType = null;
+
+        Double sum = 0.0;
+        for (Double weight : adjectiveTypeMap.values()) {
+            sum += weight;
+        }
+        Double pointer = random.nextDouble() * sum;
+        for (AdjectiveType nt : adjectiveTypeMap.keySet()) {
+            pointer -= adjectiveTypeMap.get(nt);
+            if (pointer < 0) {
+                chosenAdjectiveType = nt;
+                break;
+            }
+        }
+
+        ArrayList<Adjective> adjectiveList = new ArrayList<>(adjectives.get(chosenAdjectiveType));
+        return adjectiveList.get(random.nextInt(adjectiveList.size()));
+    }
+
+    public Noun getNoun(ArrayList<NounType> nounTypes, Boolean balanced) {
+        if (balanced) {
+            HashMap<NounType, Double> nounTypeMap = new HashMap<>();
+            for (NounType nounType : nounTypes) {
+                nounTypeMap.put(nounType, 1.0);
+            }
+            return getNoun(nounTypeMap);
+        } else {
+            ArrayList<Noun> nounList = new ArrayList<>();
+            nounTypes.stream().forEach((w) -> nounList.addAll(nouns.get(w)));
+            return nounList.get(random.nextInt(nounList.size()));
+        }
+    }
+
+    public Noun getNoun(HashMap<NounType, Double> nounTypeMap) {
+        NounType chosenNounType = null;
+
+        Double sum = 0.0;
+        for (Double weight : nounTypeMap.values()) {
+            sum += weight;
+        }
+        Double pointer = random.nextDouble() * sum;
+        for (NounType nt : nounTypeMap.keySet()) {
+            pointer -= nounTypeMap.get(nt);
+            if (pointer < 0) {
+                chosenNounType = nt;
+                break;
+            }
+        }
+
+        ArrayList<Noun> nounList = new ArrayList<>(nouns.get(chosenNounType));
+        return nounList.get(random.nextInt(nounList.size()));
+    }
+
+    public Preposition getPreposition(ArrayList<PrepositionType> prepositionTypes, Boolean balanced) {
+        if (balanced) {
+            HashMap<PrepositionType, Double> prepositionTypeMap = new HashMap<>();
+            for (PrepositionType prepositionType : prepositionTypes) {
+                prepositionTypeMap.put(prepositionType, 1.0);
+            }
+            return getPreposition(prepositionTypeMap);
+        } else {
+            ArrayList<Preposition> prepositionList = new ArrayList<>();
+            prepositionTypes.stream().forEach((w) -> prepositionList.addAll(prepositions.get(w)));
+            return prepositionList.get(random.nextInt(prepositionList.size()));
+        }
+    }
+
+    public Preposition getPreposition(HashMap<PrepositionType, Double> prepositionTypeMap) {
+        PrepositionType chosenPrepositionType = null;
+
+        Double sum = 0.0;
+        for (Double weight : prepositionTypeMap.values()) {
+            sum += weight;
+        }
+        Double pointer = random.nextDouble() * sum;
+        for (PrepositionType nt : prepositionTypeMap.keySet()) {
+            pointer -= prepositionTypeMap.get(nt);
+            if (pointer < 0) {
+                chosenPrepositionType = nt;
+                break;
+            }
+        }
+
+        ArrayList<Preposition> prepositionList = new ArrayList<>(prepositions.get(chosenPrepositionType));
+        return prepositionList.get(random.nextInt(prepositionList.size()));
+    }
+
+    public Verb getVerb(ArrayList<VerbType> verbTypes, Boolean balanced) {
+        if (balanced) {
+            HashMap<VerbType, Double> verbTypeMap = new HashMap<>();
+            for (VerbType verbType : verbTypes) {
+                verbTypeMap.put(verbType, 1.0);
+            }
+            return getVerb(verbTypeMap);
+        } else {
+            ArrayList<Verb> verbList = new ArrayList<>();
+            verbTypes.stream().forEach((w) -> verbList.addAll(verbs.get(w)));
+            return verbList.get(random.nextInt(verbList.size()));
+        }
+    }
+
+    public Verb getVerb(HashMap<VerbType, Double> verbTypeMap) {
+        VerbType chosenVerbType = null;
+
+        Double sum = 0.0;
+        for (Double weight : verbTypeMap.values()) {
+            sum += weight;
+        }
+        Double pointer = random.nextDouble() * sum;
+        for (VerbType nt : verbTypeMap.keySet()) {
+            pointer -= verbTypeMap.get(nt);
+            if (pointer < 0) {
+                chosenVerbType = nt;
+                break;
+            }
+        }
+
+        ArrayList<Verb> verbList = new ArrayList<>(verbs.get(chosenVerbType));
+        return verbList.get(random.nextInt(verbList.size()));
     }
 }

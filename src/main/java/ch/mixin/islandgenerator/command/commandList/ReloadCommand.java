@@ -3,8 +3,6 @@ package ch.mixin.islandgenerator.command.commandList;
 import ch.mixin.islandgenerator.command.SubCommand;
 import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;

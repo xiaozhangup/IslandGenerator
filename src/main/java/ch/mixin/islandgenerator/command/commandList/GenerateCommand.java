@@ -3,8 +3,6 @@ package ch.mixin.islandgenerator.command.commandList;
 import ch.mixin.islandgenerator.command.SubCommand;
 import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -22,7 +20,7 @@ public class GenerateCommand extends SubCommand {
 
     @Override
     public void execute(CommandSender sender, List<String> arguments) {
-        if (arguments.size() != 0) {
+        if (arguments.size() != 1) {
             sender.sendMessage(ChatColor.RED + "Invalid Argument Number.");
             return;
         }
@@ -32,7 +30,7 @@ public class GenerateCommand extends SubCommand {
             return;
         }
 
-        plugin.getIslandManager().startIslandGeneration();
+        plugin.getIslandManager().startIslandGeneration(arguments.get(0));
         sender.sendMessage(ChatColor.GREEN + "Success");
     }
 

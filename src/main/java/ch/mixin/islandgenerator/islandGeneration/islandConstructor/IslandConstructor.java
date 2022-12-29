@@ -2,22 +2,19 @@ package ch.mixin.islandgenerator.islandGeneration.islandConstructor;
 
 import ch.mixin.islandgenerator.helperClasses.Functions;
 import ch.mixin.islandgenerator.islandGeneration.IslandType;
-import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
-import ch.mixin.islandgenerator.metaData.IslandData;
-import ch.mixin.namegenerator.name.TitleGenerator;
 import ch.mixin.islandgenerator.islandGeneration.islandShape.IslandShape;
 import ch.mixin.islandgenerator.islandGeneration.islandShape.IslandShapeGenerator;
+import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
+import ch.mixin.islandgenerator.metaData.IslandData;
 import ch.mixin.islandgenerator.model.Coordinate3D;
 import ch.mixin.namegenerator.name.NameGenerator;
-import ch.mixin.namegenerator.word.noun.NounType;
-import org.bukkit.ChatColor;
+import ch.mixin.namegenerator.name.TitleGenerator;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -26,14 +23,13 @@ public class IslandConstructor {
     private final IslandShapeGenerator islandShapeGenerator;
     private final NameGenerator nameGenerator = new NameGenerator(new Random());
     private final TitleGenerator titleGenerator = new TitleGenerator(new Random());
+    private HashMap<IslandType, Double> islandTypeWeights;
 
     public IslandConstructor(IslandGeneratorPlugin plugin) {
         this.plugin = plugin;
         islandShapeGenerator = new IslandShapeGenerator(plugin);
         initialize();
     }
-
-    private HashMap<IslandType, Double> islandTypeWeights;
 
     private void initialize() {
         ConfigurationSection islandTypeSection = plugin.getConfig().getConfigurationSection("islandTypeWeights");
