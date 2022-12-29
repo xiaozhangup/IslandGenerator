@@ -75,9 +75,9 @@ public class IslandPlacer {
                         continue;
 
                     if (sphereRadius - length <= 1)
-                        location.getBlock().setType(Material.GLASS);
+                        location.getBlock().setType(Material.GLASS, false);
                     else if (coordinate3D.getY() > center.getY())
-                        location.getBlock().setType(Material.AIR);
+                        location.getBlock().setType(Material.AIR, false);
                 }
             }
         }
@@ -90,7 +90,7 @@ public class IslandPlacer {
         if (!Constants.Airs.contains(blockType) && blockType != Material.WATER)
             return;
 
-        location.getBlock().setType(Material.CHEST);
+        location.getBlock().setType(Material.CHEST, false);
         if (location.getBlock().getState() instanceof Chest chest) {
             HashMap<Material, Integer> lootSet = plugin.getLootManager().collectLoot(plugin.getConfig().getInt("lootMultiplier"));
 
@@ -109,7 +109,7 @@ public class IslandPlacer {
         if (!Constants.Airs.contains(blockType) && blockType != Material.WATER && blockType != Material.GLASS)
             return;
 
-        location.getBlock().setType(material);
+        location.getBlock().setType(material, false);
     }
 
     private void placeTree(World world, Coordinate3D coordinate3D, TreeType treeType) {
@@ -138,7 +138,7 @@ public class IslandPlacer {
             if (!Constants.Airs.contains(neighbour.toLocation(world).getBlock().getType()))
                 return;
 
-        location.getBlock().setType(Material.CACTUS);
+        location.getBlock().setType(Material.CACTUS, false);
     }
 }
 
