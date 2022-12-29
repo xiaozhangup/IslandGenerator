@@ -1,20 +1,20 @@
 package ch.mixin.islandgenerator.islandGeneration;
 
 import ch.mixin.islandgenerator.helperClasses.Functions;
-import ch.mixin.islandgenerator.islandGeneration.islandPlacer.IslandPlacer;
-import ch.mixin.islandgenerator.metaData.IslandData;
-import ch.mixin.islandgenerator.helperClasses.Constants;
 import ch.mixin.islandgenerator.islandGeneration.islandConstructor.IslandConstructor;
+import ch.mixin.islandgenerator.islandGeneration.islandPlacer.IslandPlacer;
 import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
+import ch.mixin.islandgenerator.metaData.IslandData;
 import ch.mixin.islandgenerator.metaData.WorldData;
 import ch.mixin.islandgenerator.model.Coordinate3D;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.Random;
 
 public class IslandManager {
     private final IslandGeneratorPlugin plugin;
@@ -50,71 +50,71 @@ public class IslandManager {
         int spawnRadius = config.getInt("spawnRadius");
         int islandDistance = config.getInt("islandDistance");
 
-            World world = plugin.getServer().getWorld(worldName);
+        World world = plugin.getServer().getWorld(worldName);
 
-            if (world == null)
-                return;
+        if (world == null)
+            return;
 
-            WorldData worldData = new WorldData(0, new ArrayList<>());
+        WorldData worldData = new WorldData(0, new ArrayList<>());
 
-            consolePrint("Start Island Pointing: " + worldName);
-            ArrayList<IslandData> newIslandDataList = new ArrayList<>();
-            islandDataMap.put(world, newIslandDataList);
-            int limit = worldData.getSpawnRadius();
+        consolePrint("Start Island Pointing: " + worldName);
+        ArrayList<IslandData> newIslandDataList = new ArrayList<>();
+        islandDataMap.put(world, newIslandDataList);
+        int limit = worldData.getSpawnRadius();
 
-            if (limit >= spawnRadius)
-                return;
+        if (limit >= spawnRadius)
+            return;
 
-            ArrayList<IslandData> islandDatas = worldData.getIslandDatas();
+        ArrayList<IslandData> islandDatas = worldData.getIslandDatas();
 
-            int iterations = (int) (Math.pow(2 * spawnRadius + 1, 2) * (highestY - lowestY + 1) / Math.pow(islandDistance, 3));
-            consolePrint("Island Pointing: " + worldName + " x" + iterations);
-            int iterationsConcluded = 0;
-            int attempts = 0;
-            int percentile = 0;
+        int iterations = (int) (Math.pow(2 * spawnRadius + 1, 2) * (highestY - lowestY + 1) / Math.pow(islandDistance, 3));
+        consolePrint("Island Pointing: " + worldName + " x" + iterations);
+        int iterationsConcluded = 0;
+        int attempts = 0;
+        int percentile = 0;
 
-            islandLoop:
-            while (iterationsConcluded < iterations) {
-                attempts++;
+        islandLoop:
+        while (iterationsConcluded < iterations) {
+            attempts++;
 
-                if (attempts >= 10) {
-                    iterationsConcluded++;
-                    attempts = 0;
-
-                    if (iterationsConcluded >= iterations)
-                        continue;
-                }
-
-                if ((percentile + 10) / 100.0 <= iterationsConcluded / (double) iterations) {
-                    percentile += 10;
-                    consolePrint("Island Pointing: " + worldName + " " + percentile + "%");
-                }
-
-                SpawnRange spawnRange = Functions.getRandomWithWeights(spawnRanges);
-
-                if (spawnRange == null)
-                    continue;
-
-                int x = random.nextInt(spawnRadius + 1) * (random.nextBoolean() ? 1 : -1);
-                int y = random.nextInt(spawnRange.getMaxHeight() + 1 - spawnRange.getMinHeight()) + spawnRange.getMinHeight();
-                int z = random.nextInt(spawnRadius + 1) * (random.nextBoolean() ? 1 : -1);
-
-                if (x < limit && x > -limit
-                        && z < limit && z > -limit) {
-                    continue;
-                }
-
-                Coordinate3D newIslandCenter = new Coordinate3D(x, y, z);
-                for (IslandData islandData : islandDatas) {
-                    if (newIslandCenter.distance(islandData.getIslandCenter()) < islandDistance)
-                        continue islandLoop;
-                }
-
-                IslandData newIslandData = new IslandData(newIslandCenter, null, false, new ArrayList<>());
-                islandDatas.add(newIslandData);
-                newIslandDataList.add(newIslandData);
+            if (attempts >= 10) {
                 iterationsConcluded++;
                 attempts = 0;
+
+                if (iterationsConcluded >= iterations)
+                    continue;
+            }
+
+            if ((percentile + 10) / 100.0 <= iterationsConcluded / (double) iterations) {
+                percentile += 10;
+                consolePrint("Island Pointing: " + worldName + " " + percentile + "%");
+            }
+
+            SpawnRange spawnRange = Functions.getRandomWithWeights(spawnRanges);
+
+            if (spawnRange == null)
+                continue;
+
+            int x = random.nextInt(spawnRadius + 1) * (random.nextBoolean() ? 1 : -1);
+            int y = random.nextInt(spawnRange.getMaxHeight() + 1 - spawnRange.getMinHeight()) + spawnRange.getMinHeight();
+            int z = random.nextInt(spawnRadius + 1) * (random.nextBoolean() ? 1 : -1);
+
+            if (x < limit && x > -limit
+                    && z < limit && z > -limit) {
+                continue;
+            }
+
+            Coordinate3D newIslandCenter = new Coordinate3D(x, y, z);
+            for (IslandData islandData : islandDatas) {
+                if (newIslandCenter.distance(islandData.getIslandCenter()) < islandDistance)
+                    continue islandLoop;
+            }
+
+            IslandData newIslandData = new IslandData(newIslandCenter, null, false, new ArrayList<>());
+            islandDatas.add(newIslandData);
+            newIslandDataList.add(newIslandData);
+            iterationsConcluded++;
+            attempts = 0;
 
 
             worldData.setSpawnRadius(spawnRadius);

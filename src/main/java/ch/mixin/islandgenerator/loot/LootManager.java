@@ -12,6 +12,7 @@ public class LootManager {
     private final IslandGeneratorPlugin plugin;
     private HashMap<Material, Double> materialWeights;
     private HashMap<Material, Double> materialAmounts;
+
     public LootManager(IslandGeneratorPlugin plugin) {
         this.plugin = plugin;
         initialize();
