@@ -9,7 +9,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.World;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class IslandPlacer {
@@ -22,8 +27,6 @@ public class IslandPlacer {
     public void placeIsland(IslandBlueprint islandBlueprint) {
         World world = islandBlueprint.getWorld();
 
-        placeLoot(world, islandBlueprint.getLootPosition());
-
         placeGlassSphere(world, islandBlueprint);
 
         for (Map.Entry<Coordinate3D, Material> entry : islandBlueprint.getBlockMap())
@@ -34,6 +37,8 @@ public class IslandPlacer {
 
         for (Coordinate3D entry : islandBlueprint.getCactusList())
             placeCactus(world, entry);
+
+        placeLoot(world, islandBlueprint.getLootPosition());
     }
 
     private void placeGlassSphere(World world, IslandBlueprint islandBlueprint) {
@@ -86,6 +91,15 @@ public class IslandPlacer {
             return;
 
         location.getBlock().setType(Material.CHEST);
+        if (location.getBlock().getState() instanceof Chest chest) {
+            HashMap<Material, Integer> lootSet = plugin.getLootManager().collectLoot(plugin.getConfig().getInt("lootMultiplier"));
+
+            final int[] slot = {0};
+            lootSet.forEach((material, integer) -> {
+                chest.getBlockInventory().setItem(slot[0], new ItemStack(material, integer));
+                slot[0]++;
+            });
+        }
     }
 
     private void placeBlock(World world, Coordinate3D coordinate3D, Material material) {

@@ -1,7 +1,6 @@
 package ch.mixin.islandgenerator.main;
 
 import ch.mixin.islandgenerator.command.CommandInitializer;
-import ch.mixin.islandgenerator.eventListener.EventListener;
 import ch.mixin.islandgenerator.islandGeneration.IslandManager;
 import ch.mixin.islandgenerator.loot.LootManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -83,7 +82,6 @@ public final class IslandGeneratorPlugin extends JavaPlugin {
         CommandInitializer.setupCommands(this);
         islandManager = new IslandManager(this);
         lootManager = new LootManager(this);
-        getServer().getPluginManager().registerEvents(new EventListener(this), this);
     }
 
     public void reload() {
