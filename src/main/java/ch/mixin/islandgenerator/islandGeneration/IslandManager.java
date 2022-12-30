@@ -3,6 +3,7 @@ package ch.mixin.islandgenerator.islandGeneration;
 import ch.mixin.islandgenerator.helperClasses.Functions;
 import ch.mixin.islandgenerator.islandGeneration.islandConstructor.IslandConstructor;
 import ch.mixin.islandgenerator.islandGeneration.islandPlacer.IslandPlacer;
+import ch.mixin.islandgenerator.main.FinishGenerEvent;
 import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
 import ch.mixin.islandgenerator.metaData.IslandData;
 import ch.mixin.islandgenerator.metaData.WorldData;
@@ -150,6 +151,7 @@ public class IslandManager {
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> generationStep(islandDataMap), plugin.getConfig().getInt("tickBuffer"));
         } else {
             consolePrint("Finish Island Construction");
+            plugin.getServer().getPluginManager().callEvent(new FinishGenerEvent(world.getName()));
         }
     }
 
