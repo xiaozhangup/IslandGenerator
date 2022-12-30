@@ -20,7 +20,7 @@ public class GenerateCommand extends SubCommand {
 
     @Override
     public void execute(CommandSender sender, List<String> arguments) {
-        if (arguments.size() != 1) {
+        if (arguments.size() != 2) {
             sender.sendMessage(ChatColor.RED + "Invalid Argument Number.");
             return;
         }
@@ -30,7 +30,7 @@ public class GenerateCommand extends SubCommand {
             return;
         }
 
-        plugin.getIslandManager().startIslandGeneration(arguments.get(0));
+        plugin.getIslandManager().startIslandGeneration(arguments.get(0), Integer.parseInt(arguments.get(1)));
         sender.sendMessage(ChatColor.GREEN + "Success");
     }
 

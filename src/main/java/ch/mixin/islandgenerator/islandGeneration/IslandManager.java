@@ -27,7 +27,7 @@ public class IslandManager {
         islandPlacer = new IslandPlacer(plugin);
     }
 
-    public void startIslandGeneration(String worldName) {
+    public void startIslandGeneration(String worldName, int spawnRadius) {
         consolePrint("Start Island Generation");
         Random random = plugin.getRandom();
         HashMap<World, ArrayList<IslandData>> islandDataMap = new HashMap<>();
@@ -47,7 +47,6 @@ public class IslandManager {
             lowestY = Math.min(spawnRange.getMinHeight(), lowestY);
         }
 
-        int spawnRadius = config.getInt("spawnRadius");
         int islandDistance = config.getInt("islandDistance");
 
         World world = plugin.getServer().getWorld(worldName);
