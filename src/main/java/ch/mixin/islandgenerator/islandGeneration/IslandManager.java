@@ -8,6 +8,7 @@ import ch.mixin.islandgenerator.main.IslandGeneratorPlugin;
 import ch.mixin.islandgenerator.metaData.IslandData;
 import ch.mixin.islandgenerator.metaData.WorldData;
 import ch.mixin.islandgenerator.model.Coordinate3D;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -72,6 +73,12 @@ public class IslandManager {
         int iterationsConcluded = 0;
         int attempts = 0;
         int percentile = 0;
+
+//        org land gener
+//        Coordinate3D orgloc = new Coordinate3D(0,96,0);
+//        IslandData org = new IslandData(orgloc, null, false, new ArrayList<>());
+//        islandDatas.add(org);
+//        newIslandDataList.add(org);
 
         islandLoop:
         while (iterationsConcluded < iterations) {
@@ -138,7 +145,13 @@ public class IslandManager {
         if (islandDataList.size() > 0) {
             IslandData islandData = islandDataList.get(0);
             islandDataList.remove(islandData);
-            islandPlacer.placeIsland(islandConstructor.constructIsland(world, islandData));
+            var blueprint = islandConstructor.constructIsland(world, islandData);
+            if (islandDataList.size() == 1) {
+                Location spawn = blueprint.getLootPosition().toLocation(world).clone();
+                spawn.add(0, 1, 0);
+                world.setSpawnLocation(spawn);
+            }
+            islandPlacer.placeIsland(blueprint);
             consolePrint(islandDataList.size() + " islands left in " + world.getName() + ".");
         }
 

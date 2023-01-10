@@ -20,8 +20,8 @@ islandTypeWeights:
   Glass: 0.10
 spawnRangeTable:
   0:
-    maxHeight: 319
-    minHeight: -64
+    maxHeight: 288
+    minHeight: -32
     weight: 2
 lootTable:
   COAL:
